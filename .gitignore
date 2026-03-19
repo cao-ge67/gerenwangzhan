@@ -1,15 +1,15 @@
-# Maven
-.mvn/
-mvnw
-mvnw.cmd
+# Java
 target/
 *.class
 *.jar
 *.war
 *.ear
-*.zip
-*.tar.gz
-*.rar
+*.log
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
 
 # IDE
 .idea/
@@ -18,31 +18,23 @@ target/
 *.swp
 *.swo
 *~
-.DS_Store
 
-# Node / Frontend
+# Frontend
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
 frontend/.DS_Store
 
-# Logs
-*.log
-logs/
+# OS
+.DS_Store
+Thumbs.db
 
 # Database
-*.db
-*.sqlite
-
-# OS
-Thumbs.db
-.DS_Store
-
-# Build
-build/
-out/
+*.sql
+!init_fixed.sql
 
 # Temporary files
 *.tmp
 *.temp
-.cache/
+*.bak
+*.swp
