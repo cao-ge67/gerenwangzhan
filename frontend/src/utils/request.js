@@ -9,6 +9,7 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   config => {
+    console.log('Request config:', config)
     // 在发送请求之前做些什么，比如添加token
     const token = localStorage.getItem('token')
     if (token) {

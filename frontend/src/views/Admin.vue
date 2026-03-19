@@ -467,6 +467,20 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: url('https://i.bobopic.com/small/63883126.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+.admin-panel::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.75);
+  z-index: -1;
 }
 
 .admin-header {

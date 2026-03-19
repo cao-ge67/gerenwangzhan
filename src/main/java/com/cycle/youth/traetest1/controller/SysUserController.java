@@ -5,6 +5,7 @@ import com.cycle.youth.traetest1.entity.SysUser;
 import com.cycle.youth.traetest1.service.ISysUserService;
 import com.cycle.youth.traetest1.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -74,5 +75,22 @@ public class SysUserController {
         } else {
             return Result.error("用户不存在");
         }
+    }
+
+    /**
+     * 测试密码哈希（临时调试用）
+     */
+    @GetMapping("/test-password")
+    public Map<String, Object> testPassword(@RequestParam String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(password);
+        boolean matches = encoder.matches(password, hashedPassword);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("originalPassword", password);
+        result.put("hashedPassword", hashedPassword);
+        result.put("matches", matches);
+        
+        return result;
     }
 }

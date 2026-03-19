@@ -6,8 +6,8 @@ import com.cycle.youth.traetest1.entity.SysUser;
 import com.cycle.youth.traetest1.mapper.SysUserMapper;
 import com.cycle.youth.traetest1.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 /**
  * <p>
@@ -22,6 +22,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserMapper sysUserMapper;
+    
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public SysUser findByUsername(String username) {
@@ -33,30 +35,48 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public SysUser login(String username, String password) {
-        // 对密码进行MD5加密
-        String encryptedPassword = DigestUtils.md5DigestAsHex(password.getBytes());
+        System.out.println("=== 登录调试信息 ===");
+        System.out.println("输入用户名: " + username);
+        System.out.println("输入密码: " + password);
         
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
         wrapper.eq("username", username);
-        wrapper.eq("password", encryptedPassword);
         wrapper.eq("deleted", 0);
         
-        return sysUserMapper.selectOne(wrapper);
+        SysUser user = sysUserMapper.selectOne(wrapper);
+        
+        if (user != null) {
+            System.out.println("找到用户: " + user.getUsername());
+            System.out.println("数据库密码哈希: " + user.getPassword());
+            System.out.println("密码匹配测试开始...");
+            
+            boolean matches = passwordEncoder.matches(password, user.getPassword());
+            System.out.println("密码匹配结果: " + matches);
+            
+            if (matches) {
+                System.out.println("登录成功!");
+                return user;
+            } else {
+                System.out.println("密码不匹配!");
+            }
+        } else {
+            System.out.println("用户不存在!");
+        }
+        
+        System.out.println("登录失败!");
+        return null;
     }
 
     @Override
     public boolean register(SysUser user) {
-        // 检查用户名是否已存在
         SysUser existingUser = findByUsername(user.getUsername());
         if (existingUser != null) {
             return false;
         }
         
-        // 对密码进行MD5加密
-        String encryptedPassword = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
         
-        // 设置默认角色
         if (user.getRole() == null || user.getRole().isEmpty()) {
             user.setRole("USER");
         }

@@ -119,10 +119,22 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: url('https://i.bobopic.com/small/63883126.jpg') no-repeat center center fixed;
+  background-size: cover;
   padding: 20px;
   position: relative;
   overflow: hidden;
+}
+
+.login-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.75);
+  z-index: -1;
 }
 
 .login-wrapper {
