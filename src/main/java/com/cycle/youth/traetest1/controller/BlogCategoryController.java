@@ -8,20 +8,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * <p>
- * 博客分类表 前端控制器
- * </p>
- *
- * @author 曹戈
- * @since 2026-03-19
- */
 @RestController
 @RequestMapping("/api/category")
 public class BlogCategoryController {
 
+    private final IBlogCategoryService blogCategoryService;
+
     @Autowired
-    private IBlogCategoryService blogCategoryService;
+    public BlogCategoryController(IBlogCategoryService blogCategoryService) {
+        this.blogCategoryService = blogCategoryService;
+    }
 
     /**
      * 获取所有分类
